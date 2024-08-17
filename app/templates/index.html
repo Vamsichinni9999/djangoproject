@@ -1,0 +1,68 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <style>
+      .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+      .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+    </style>
+
+    <title>Artwork Gallery</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}">
+          <img src="{% static 'logo.jpg' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+          ARTWORKS GALLERY
+        </a>
+      </div>
+    </nav>
+
+    <h1 class="text-center my-4">PENCIL DRAWING ARTWORKS</h1>
+    <form action="{% url 'search' %}" class="d-flex container mb-4" method="GET">
+      <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+
+    <div class="container">
+      {% for x in image %}
+      {% if forloop.first %}
+      <div class="row">
+        {% endif %}
+        <div class="col-lg-4 col-md-6 col-12 mb-4">
+          <div class="card">
+            <img src="{{x.img.url}}" class="card-img-top" alt="Artwork">
+            <div class="card-body">
+              <h5 class="card-title">{{x.title}}</h5>
+              <a href="{{x.get_absolute_url}}" class="btn btn-primary">View Full Picture</a>
+            </div>
+          </div>
+        </div>
+        {% if forloop.counter|divisibleby:3 %}
+      </div>
+      <div class="row">
+        {% endif %}
+        {% if forloop.last %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  </body>
+</html>
